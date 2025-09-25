@@ -41,4 +41,13 @@ app.get("/",async (req,resp)=>{
   const data=  await pschema.find()
   resp.send(data)
 })
+app.get("/:key",async (req,resp)=>{
+  const data=  await pschema.find({id:req.params.key})
+  resp.send(data);
+})
+app.get("/category/:key",async (req,resp)=>{
+  // console.log(req.params.key)
+   const data=  await pschema.find({category:req.params.key})
+   resp.send(data);
+})
 app.listen(4000)
