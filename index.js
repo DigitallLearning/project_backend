@@ -1,5 +1,6 @@
 const conn=require("./connection")
 const pschema=require("./schema")
+const register=require("./register")
 const express=require("express")
 
 const app=express()
@@ -49,5 +50,40 @@ app.get("/category/:key",async (req,resp)=>{
   // console.log(req.params.key)
    const data=  await pschema.find({category:req.params.key})
    resp.send(data);
+})
+app.post("/user/register",(req,resp)=>{
+   upload(req,resp,(err)=>{
+      if(err)
+      {
+        resp.send(err)
+      }
+      else{
+          const data=new register({
+            name:req.body.name,
+            pass:req.body.pass,
+            email:req.body.email,
+            mobile:req.body.mobile
+          })
+          data.save()
+          resp.send("Register ho gaya")
+      }
+   })
+})
+app.post("/user/login",async (req,resp)=>{
+  var user=await register.findOne({name:req.body.name})
+  if(user)
+  {
+        if(req.body.pass==user.pass)
+        {
+            resp.send("User Login Sucessfully") 
+        }
+        else{
+           resp.send("Wrong Pass") 
+        }
+  }
+  else{
+      resp.send("User Does Not Exists") 
+  }
+ 
 })
 app.listen(4000)
