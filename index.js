@@ -92,7 +92,7 @@ app.post("/user/login",async (req,resp)=>{
   }
  
 })
-app.post("/card",(req,resp)=>{
+app.post("/prd/card",(req,resp)=>{
    upload(req,resp,(err)=>{
       if(err)
       {
@@ -109,5 +109,14 @@ app.post("/card",(req,resp)=>{
           resp.send("data save in card")
       }
    })
+})
+app.get("/prd/card",async (req,resp)=>{
+  const data=  await card.find()
+  resp.send(data)
+})
+app.delete("/prd/card/:key",async (req,resp)=>{
+  const data=  await card.deleteOne({id:req.params.key})
+  resp.send("Data delete sucefully")
+   
 })
 app.listen(4000)
