@@ -1,5 +1,6 @@
 const conn=require("./connection")
 const pschema=require("./schema")
+const card=require("./card")
 const register=require("./register")
 const express=require("express")
 const bcrypt=require("bcrypt")
@@ -90,5 +91,23 @@ app.post("/user/login",async (req,resp)=>{
       resp.send("User Does Not Exists") 
   }
  
+})
+app.post("/card",(req,resp)=>{
+   upload(req,resp,(err)=>{
+      if(err)
+      {
+        resp.send(err)
+      }
+      else{
+          const data=new card({
+            id:req.body.id,
+            title:req.body.title,
+            price:req.body.price,
+            image:req.body.image
+          })
+          data.save()
+          resp.send("data save in card")
+      }
+   })
 })
 app.listen(4000)
